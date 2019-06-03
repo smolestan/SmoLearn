@@ -12,6 +12,12 @@ Main
 
     <br>
 
+    {% regroup lessons by chapter as chapter_list %}
+
+    {% for chapter in chapter_list %}
+
+    <h4 style="text-align: center">Chapter {{ chapter.grouper }}</h4>
+
     <table class="table table-sm table-hover LessonsList">
         <thead>
             <tr>
@@ -21,7 +27,7 @@ Main
             </tr>
         </thead>
 
-        {% for lesson in lessons %}
+        {% for lesson in chapter.list %}
         <tr>
             {% if lesson.status == "Available" %}
                 <td align="middle"><a href="{% url 'lesson' lesson.id %}">{{ lesson.chapter }}.{{ lesson.number }}</a></td>
@@ -38,7 +44,7 @@ Main
 
     </table>
 
-
+    {% endfor %}
 
 </div>
 
