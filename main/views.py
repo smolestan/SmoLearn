@@ -13,7 +13,7 @@ def index(request):
         current_course = getattr(request.user.profile.current_course, 'title')
     except:
         current_course = None
-    lessons = Lesson.objects.filter(course=request.user.profile.current_course)
+    lessons = Lesson.objects.filter(course=request.user.profile.current_course).order_by('chapter', 'number')
 
     context = {
         "user": request.user,
