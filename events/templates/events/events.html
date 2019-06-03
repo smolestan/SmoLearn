@@ -1,0 +1,48 @@
+{% extends "main/base.html" %}
+{% load static i18n %}
+
+{% block title %}
+SmoLearn
+{% endblock %}
+
+{% block content %}{% endblock %}
+{% block events %}active{% endblock %}
+
+{% block body %}
+
+<div class="container py-5">
+
+    <h2 style="text-align: center">Events </h2>
+    <br>
+
+    <table class="table table-sm table-hover LessonsList">
+        <thead>
+            <tr>
+                <th scope="col" style="width: 30%; text-align:center">Date & Time</th>
+                <th scope="col" style="width: 50%; text-align:center">Title</th>
+                <th scope="col" style="width: 20%; text-align:center">Status</th>
+            </tr>
+        </thead>
+
+        {% for event in events %}
+        <tr>
+            <td align="middle"><a href="{% url 'event' event.id %}">{{ event.event_date }}</a></td>
+            <td align="middle"><a href="{% url 'event' event.id %}">{{ event.title }}</a></td>
+            <td align="middle"><a href="{% url 'event' event.id %}">
+                {% if event.status == "Completed" %}
+                    <span class="badge badge-secondary">{{ event.status }}</span>
+                {% elif event.status == "Upcoming" %}
+                    <span class="badge badge-warning">{{ event.status }}</span>
+                {% endif %}
+            </a></td>
+            </a>
+        </tr>
+        {% endfor %}
+    </table>
+
+
+
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,85 @@
+{% load static i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- My JavaScript -->
+    <script type="text/JavaScript" src="{% static 'main/index.js' %}"></script>
+    <!-- My CSS -->
+    <link rel="stylesheet" href="{% static 'main/styles.css' %}">
+    <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+  integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <title>SmoleLearn</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <a class="navbar-brand m-1 font-weight-bold" id="brand" href="{% url 'index' %}" style="color:white">SmoLearn</a>
+    <form class="form mx-3" action="{% url 'set_language' %}" method="POST">
+        {% csrf_token %}
+        <input type='hidden' name='next' value='{{ redirect_to }}'>
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        <div class="dropdown">
+            <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% for language in languages %}
+                {% if language.code == LANGUAGE_CODE %}{{ language.name_local }}{% endif %}
+                {% endfor %}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% for language in languages %}
+                <button class="dropdown-item" name="language" type="submit" value="{{ language.code }}">{{ language.name_local }} ({{ language.code }})</button>
+                {% endfor %}
+            </div>
+        </div>
+    </form>
+
+    {% block login %}
+    <div class="navbar-collapse" id="navbarToggler">
+        <ul class="navbar-nav ml-auto">
+            <form action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+            <li class="nav-item"> {{ login_form.username }} {{ login_form.password }}
+                <button name='submit' class="btn btn-outline-light" type="submit" value='sign_in'>{% trans "Login" %}</button>
+                <div class="row" style="color:whitesmoke">
+                    <div class="col-6">
+                    {% if contact_message != "Success! Please wait for a call or email from our customer manager." and contact_message != "Отправлено! Просим ожидать эл.письмо или звонок от нашего менеджера по работе с клиентами." and contact_form.errors.email.as_json != '[{"message": "This email has already been registered", "code": ""}]' and contact_form.errors.email.as_json != '[{"message": "\u042d\u0442\u043e\u0442 \u044d\u043b.\u0430\u0434\u0440\u0435\u0441 \u0443\u0436\u0435 \u0437\u0430\u0440\u0435\u0433\u0438\u0441\u0442\u0440\u0438\u0440\u043e\u0432\u0430\u043d", "code": ""}]'%}
+                        {% for item in login_form.errors.username %}
+                            {{ item }}
+                        {% endfor %}
+                        {% for item in login_form.errors.password %}
+                            {{ item }}
+                        {% endfor %}
+                    {% endif %}
+                    </div>
+                    <div class="col-6">
+                    <small class="text-muted p-0">
+                            <a href="{% url 'password_reset' %}">Forgot Password?</a>
+                        </small>
+                    </div>
+                </div>
+            </li>
+            <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+            </form>
+        </ul>
+    </div>
+    {% endblock %}
+</nav>
+
+{% block content %}
+{% endblock %}
+</body>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
+</script>
+</html>

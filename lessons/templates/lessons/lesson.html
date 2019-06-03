@@ -1,0 +1,43 @@
+{% extends "main/base.html" %}
+{% load static i18n %}
+
+{% block title %}
+Main
+{% endblock %}
+{% block body %}
+
+<div class="container py-5">
+
+    <h3 style="text-align: center"> {{ lesson.chapter }}.{{ lesson.number }} {{ lesson }} </h3>
+    <br>
+
+    <div class="card-deck">
+        <a href="{% url 'video' lesson.id %}" class="card my-3 p-3" style="max-width: 15rem; min-width: 10rem;">
+          <img src="{{ videoicon.image.url }}" class="card-img-top" alt="">
+          <div class="card-body">
+            <h5 class="card-title text-center"> Video </h5>
+            <p class="card-text text-center">Webinar Recording</p>
+          </div>
+        </a>
+        <a href="{% url 'presentation' lesson.id %}" class="card my-3 p-3" style="max-width: 15rem; min-width: 10rem;">
+          <img src="{{ fileicon.image.url }}" class="card-img-top" alt="">
+          <div class="card-body">
+            <h5 class="card-title text-center"> File </h5>
+            <p class="card-text text-center">Presentation from Webinar</p>
+          </div>
+        </a>
+        <a href="{% url 'activity' lesson.id %}" class="card my-3 p-3" style="max-width: 15rem; min-width: 10rem;">
+          <img src="{{ activityicon.image.url }}" class="card-img-top" alt="">
+          <div class="card-body">
+            <h5 class="card-title text-center"> Activity </h5>
+            <p class="card-text text-center">Quiz & Homework for the lesson</p>
+          </div>
+        </a>
+  
+    </div>
+  
+    <a class="btn btn-outline-info mx-1" href="{% url 'index' %}" role="button">{% trans "Back" %}</a>
+
+</div>
+
+{% endblock %}

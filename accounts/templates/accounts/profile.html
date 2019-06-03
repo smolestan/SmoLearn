@@ -1,0 +1,81 @@
+{% extends "main/base.html" %}
+{% load static i18n crispy_forms_tags %}
+
+{% block content %}{% endblock %}
+
+{% block title %}
+Main
+{% endblock %}
+{% block body %}
+
+<div class="content-section py-5">
+    <div class="media">
+        <img src="{{ user.profile.image.url }}" alt="" class="rounded-circle account-img">
+        <div class="media-body">
+            <div class="row">
+                <div class="col-lg-7">
+                    <h2 class="account-heading">{{ user.username }}</h2>
+                    <p class="text-secondary">{{ user.email }}</p>
+                </div>
+                <div class="col-lg-3">
+                    <form class="form" action="{% url 'set_language' %}" method="POST">
+                        {% csrf_token %}
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        <label for="dropdownMenuButton">Language Interface</label>
+                        <div class="dropdown">
+                            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% for language in languages %}
+                                {% if language.code == LANGUAGE_CODE %}{{ language.name_local }}{% endif %}
+                                {% endfor %}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                {% for language in languages %}
+                                <button class="dropdown-item" name="language" type="submit" value="{{ language.code }}">{{ language.name_local }} ({{ language.code }})</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-2">
+                        <label for="reset">Change Password</label><br>
+                        <a href="{% url 'password_reset' %}" class="btn btn-outline-dark" name="reset">Reset</a>
+                    </div>    
+    
+            </div>
+        </div>
+    </div>
+
+    <form class="form" action="{% url 'profile' %}" method="POST">
+        {% csrf_token %}
+        <label for="currentCourseButton">Change Current Course</label>
+        <div class="dropdown">
+            <button class="btn btn-outline-info dropdown-toggle" type="button" id="currentCourseButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ current_course }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="currentCourseButton">
+                {% for item in assigned_courses %}
+                    <button class="dropdown-item" name="course" type="submit" value="{{ item.id }}">{{ item }}</button>
+                {% endfor %}
+            </div>
+        </div>
+    </form>
+
+    <br>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group"
+            <legend class="border-bottom mb-4">Profile Info</legend>
+            {{ u_form|crispy }}
+            {{ p_form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" value="update_profile" name="submit" type="submit">Update Profile Info</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+

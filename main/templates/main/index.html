@@ -1,0 +1,45 @@
+{% extends "main/base.html" %}
+{% load static i18n %}
+
+{% block title %}
+Main
+{% endblock %}
+{% block body %}
+
+<div class="container py-5">
+
+    <h2 style="text-align: center">Contents </h2>
+
+    <br>
+
+    <table class="table table-sm table-hover LessonsList">
+        <thead>
+            <tr>
+                <th scope="col" style="width: 20%; text-align:center">Lesson</th>
+                <th scope="col" style="width: 60%; text-align:center">Title</th>
+                <th scope="col" style="width: 20%; text-align:center">Status</th>
+            </tr>
+        </thead>
+
+        {% for lesson in lessons %}
+        <tr>
+            {% if lesson.status == "Available" %}
+                <td align="middle"><a href="{% url 'lesson' lesson.id %}">{{ lesson.chapter }}.{{ lesson.number }}</a></td>
+                <td><a href="{% url 'lesson' lesson.id %}">{{ lesson.title }}</a></td>
+                <td align="middle"><a href="{% url 'lesson' lesson.id %}"><span class="badge badge-success">{{ lesson.status }}</span></a></td>
+            {% elif lesson.status == "Not available" %}
+                <td align="middle"><p></a>{{ lesson.chapter }}.{{ lesson.number }}</p></td>
+                <td><p>{{ lesson.title }}</p></td>
+                <td align="middle"><p><span class="badge badge-secondary">{{ lesson.status }}</span></p></td>
+        {% endif %}
+            
+        </tr>
+        {% endfor %}
+
+    </table>
+
+
+
+</div>
+
+{% endblock %}

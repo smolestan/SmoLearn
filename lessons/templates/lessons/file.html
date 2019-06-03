@@ -1,0 +1,22 @@
+{% extends "main/base.html" %}
+{% load static i18n %}
+
+{% block title %}
+Main
+{% endblock %}
+{% block body %}
+
+<div class="container py-5">
+
+    <h3 style="text-align: center"> {{ lesson.chapter }}.{{ lesson.number }} {{ lesson }} - Presentation </h3>
+    {% if lesson.lesson_file %}
+        <embed id="presentation" src="{{ lesson.lesson_file.url }}">
+    {% else %}
+        <p class="lead">This lesson has no Presentation File</p> 
+    {% endif %}
+    <br>
+    <a class="btn btn-outline-info mx-1" href="{% url 'lesson' lesson.id %}"" role="button">{% trans "Back" %}</a>
+
+</div>
+
+{% endblock %}

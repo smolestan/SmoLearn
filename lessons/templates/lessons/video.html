@@ -1,0 +1,26 @@
+{% extends "main/base.html" %}
+{% load static i18n %}
+
+{% block title %}
+Main
+{% endblock %}
+{% block body %}
+
+<div class="container py-5">
+
+    <h3 style="text-align: center"> {{ lesson.chapter }}.{{ lesson.number }} {{ lesson }} - Video </h3>
+    {% if lesson.lesson_video %}
+      <video id="video" controls>
+        <source src="{{ lesson.lesson_video.url }}" type="video/mp4">
+      Your browser does not support the video tag.
+      </video>  
+    {% else %}
+      <p class="lead">This lesson has no Video</p> 
+    {% endif %}
+
+  <br>
+    <a class="btn btn-outline-info mx-1" href="{% url 'lesson' lesson.id %}"" role="button">{% trans "Back" %}</a>
+
+</div>
+
+{% endblock %}

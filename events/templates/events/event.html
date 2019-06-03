@@ -1,0 +1,24 @@
+{% extends "main/base.html" %}
+{% load static i18n %}
+
+{% block title %}
+SmoLearn
+{% endblock %}
+
+{% block content %}{% endblock %}
+{% block events %}active{% endblock %}
+
+{% block body %}
+
+<div class="container py-5">
+
+    <h2 class="border-bottom mb-2">{{ event.title }} </h2>
+    <br>
+    <p>{{ event.description | safe | linebreaks }}</p> 
+    <a class="btn btn-outline-info mx-1" href="{% url 'events' %}" role="button">{% trans "Back" %}</a>
+
+
+</div>
+
+{% endblock %}
+

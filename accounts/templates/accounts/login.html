@@ -1,0 +1,73 @@
+{% extends "accounts/login_base.html" %}
+{% load static i18n %}
+
+{% block content %}
+<div class="jumbotron" id='jumbo'>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>{% trans "Welcome to SmoLearn" %}</h2>
+            <h6>{% trans "Learning Management System (LMS)" %}</h6>
+            <br>
+            <h5>{% trans "Want to launch your digital training portal?" %}</h5>
+            <br>
+            <h5>{% trans "Complete contact form, join people using SmoleLearn." %}</h5>
+        </div>
+        <div class="col-md-6">
+            <h1 style="color: rgb(0, 88, 104)">{% trans "Contact form" %}</h1>
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        {{ contact_form.first_name }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ contact_form.last_name }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        {{ contact_form.email }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ contact_form.phone }}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                        <button name='submit_reg_form' type="submit" value="contact" class="btn btn-info">{% trans "Send" %}</button>
+                    </div>
+                    <div class="col-md-8" style="color:rgb(248, 51, 51)">
+                        {% if login_form.errors.password.as_json != '[{"message": "Invalid Password", "code": ""}]' and login_form.errors.username.as_json != '[{"message": "Invalid Username", "code": ""}]' and login_form.errors.username.as_json != '[{"message": "\u041d\u0435\u0432\u0435\u0440\u043d\u044b\u0439 \u043b\u043e\u0433\u0438\u043d", "code": ""}]' and login_form.errors.password.as_json != '[{"message": "\u041d\u0435\u0432\u0435\u0440\u043d\u044b\u0439 \u043f\u0430\u0440\u043e\u043b\u044c", "code": ""}]'%}
+                            <ul>
+                            {% for item in contact_form.errors.email %}
+                                <li>{{ item }}</li>
+                            {% endfor %}
+                        {% endif %}
+                        {{ contact_message }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br>
+</div> 
+<div class="container text-center">
+    <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <h2>{% trans "Launch in a snap" %}</h2>
+            <p>{% trans "Upload content, invite users, and start tracking results just in one day. Seriously." %}</p>
+          </div>
+          <div class="col-md-4">
+            <h2>{% trans "Dedicated tech support" %}</h2>
+            <p>{% trans "Support experts are ready to help you over the phone or email as soon as possible." %}</p>
+          </div>
+          <div class="col-md-4">
+            <h2>{% trans "Mobile learning" %}</h2>
+            <p>{% trans "Learners can study when and where they want to. Our website is Mobile-Friendly." %}</p>
+          </div>
+        </div>
+    
+        <hr></div>
+        
+{% endblock %}

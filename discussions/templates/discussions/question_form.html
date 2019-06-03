@@ -1,0 +1,30 @@
+{% extends "main/base.html" %}
+{% load static i18n crispy_forms_tags %}
+
+{% block title %}
+Question
+{% endblock %}
+
+{% block content %}{% endblock %}
+{% block discussions %}active{% endblock %}
+
+{% block body %}
+
+<div class="container py-5">
+
+    <h4 style="text-align: center"> Discussions </h4>
+    <br>
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Question</legend>
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-danger" type="submit">Ask</button>
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

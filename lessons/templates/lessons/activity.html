@@ -1,0 +1,87 @@
+{% extends "main/base.html" %}
+{% load static i18n crispy_forms_tags %}
+
+{% block title %}
+Main
+{% endblock %}
+{% block body %}
+
+<script type="text/javascript">
+    {% for smile in smiles %}
+        var img{{ smile.title }}  = "{{ smile.image.url }}";
+    {% endfor %}
+</script>
+
+<div class="container py-5">
+    
+    <h3 style="text-align: center"> {{ lesson.chapter }}.{{ lesson.number }} {{ lesson }} - Activity </h3>
+    {% if lesson.task %}
+
+        <h5>Please prepare to take a Quiz</h5>
+        <div id="qcontainer">
+            <div id="start">Click <br> here <br> to <br> Start!</div>
+            <div id="quiz" style="display: none">
+                <div id="question"></div>
+                <div id="choices">
+                    <div class="choice" id="Y"
+                    onclick="checkAnswer('Yes')"></div>
+                    <div class="choice" id="N"
+                    onclick="checkAnswer('No')"></div>
+                </div>
+                <div id="timer">
+                    <div id="counter"></div>
+                    <div id="btimeGauge"></div>
+                    <div id="timeGauge"></div>
+                </div>
+                <div id="progress"></div>
+            </div>
+            <div id="scoreContainer" style="display: none"></div>
+        </div>
+
+        <br>
+        
+        <h5>Homework</h5>
+        <h5>{{ lesson.task | safe | linebreaks }}</h5>
+        
+        {% if lesson.attachment %}
+            <p>Download Attachment:</p>
+            <a href="{{ lesson.attachment.url }}">{{ lesson.attachment.url }}</a>
+        {% endif %}
+        <br>
+        <br>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            {% if status %}
+                <p class="lead"> You have already sent your HomeWork and it is in status 
+                    {% if status == "Processing" %}
+                        <span class="badge badge-warning">{{ status }}</span>
+                    {% elif status == "Rejected" %}
+                        <span class="badge badge-danger">{{ status }}</span>
+                    {% else %}
+                        <span class="badge badge-success">{{ status }}</span>
+                    {% endif %}
+                </p>
+                {% if comment %}
+                <p class="lead"> Instructor left a comment for you: {{ comment }}</p>
+                {% endif %}
+            {% endif %}
+
+            {% if form %}
+                <div class="form-group">
+                    <button class="btn btn-outline-danger" value="send_answer" name="submit" type="submit">Send Answer</button>
+                </div>
+            {% endif %}
+        </form>
+
+    {% else %}
+        <p class="lead">This lesson has no Activity</p> 
+    {% endif %}
+
+        <br>
+        <a class="btn btn-outline-info mx-1" href="{% url 'lesson' lesson.id %}" role="button">{% trans "Back" %}</a>
+</div>
+
+{% endblock %}

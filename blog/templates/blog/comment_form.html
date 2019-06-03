@@ -1,0 +1,61 @@
+{% extends "main/base.html" %}
+{% load static i18n crispy_forms_tags %}
+
+{% block title %}
+Main
+{% endblock %}
+
+{% block content %}{% endblock %}
+{% block blog %}active{% endblock %}
+
+{% block body %}
+
+<div class="container py-5">
+      <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+        <div class="media-body">
+          <div class="article-metadata">
+            <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
+            <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+          </div>
+          <h2 class="article-title">{{ post.title }}</h2>
+          <p class="article-content">{{ post.content }}</p>
+        </div>
+      </article>
+
+      {% if comments %}
+        <p>Comments:</p>
+      {% endif %}
+      <ul>
+          {% for comment in comments %}
+          <article class="media content-section">
+              <img class="rounded-circle article-img" src="{{ comment.author.profile.image.url }}">
+              <div class="media-body">
+                  <div class="article-metadata">
+                      <a class="mr-2" href="#">{{ comment.author }}</a>
+                      <small class="text-muted">{{ comment.date_posted|date:"F d, Y H:m" }}</small>
+                  </div>
+                  <p class="article-content">{{ comment.comment }}</p>
+              </div>
+          </article>
+          <br>
+          {% endfor %}
+      </ul>
+  
+
+      <form method="POST">
+          {% csrf_token %}
+          <fieldset class="form-group">
+              {{ form|crispy }}
+          </fieldset>
+          <input type="hidden" name="post" value="{{ post.id }}">
+          <div class="form-group">
+              <button class="btn btn-outline-danger" type="submit">Add</button>
+          </div>
+      </form>
+      <a class="btn btn-outline-info mx-1" href="{% url 'blog' %}" role="button">{% trans "Back" %}</a>
+  
+</div>
+
+{% endblock %}
+
