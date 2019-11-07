@@ -1,3 +1,5 @@
+# SmoLearn
+
 Hi! This is my Final Project on HarvardX CS50web Web programming with Python and JavaScript course.
 
 I have decided to make an Learning Management System (LMS) as my web application for my Final Project.
